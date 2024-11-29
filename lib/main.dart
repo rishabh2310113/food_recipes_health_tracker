@@ -1,3 +1,4 @@
+import 'package:final_project/home.dart';
 import 'package:final_project/privacy_&_policy.dart';
 import 'package:final_project/terms_&_conditions.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/forgot_password': (context) => ForgotPasswordScreen(),
         '/terms': (context) => TermsAndConditionsScreen(), 
         '/privacy': (context) => PrivacyPolicyScreen(), 
+        '/home': (context) => HomeScreen(),
       },
     );
   }

@@ -12,7 +12,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   bool _isPasswordVisible = false;
 
-
   void loginAccount() async{
   String email = emailController.text.trim();
   String password = passwordController.text.trim();

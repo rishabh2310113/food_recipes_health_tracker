@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -23,6 +25,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
         const SnackBar(
           content: Text("please fill all the details!"),
           backgroundColor: Color(0xFFE55353),
+        ),
+      );
+      return;
+    }
+
+    final url = Uri.parse('https://e-mail-auth.onrender.com');
+    final headers = {'Content-Type': 'application/json'};
+    final body = jsonEncode({
+      'name' : name ,
+      'email' : email,
+      'password' : password,
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("creating your account..."),
+        backgroundColor: Colors.blue,
+        ),
+    );
+
+    try{
+      final response = await http.post(url, headers:headers, body:body);
+
+      if(response.statusCode == 200){
+        final responseData = jsonDecode(response.body);
+        if(responseData['success'] == true){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Account created successfully"),backgroundColor: Colors.green,)
+            );
+
+            Navigator.pushNamed(context, '/home');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(responseData['message'] ?? "Something went wrong."),
+              backgroundColor: Colors.red,
+              ),
+            );
+          }
+      } else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Error: ${response.statusCode} - ${response.reasonPhrase}"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch(error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("An error occurred: $error"),
+          backgroundColor: Colors.red,
         ),
       );
     }
