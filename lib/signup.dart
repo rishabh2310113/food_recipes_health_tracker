@@ -14,6 +14,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
 
   bool _isPasswordVisible = false;
+  bool _isLoading = false;
 
   void createAccount() async{
     String name = nameController.text.trim();
@@ -29,6 +30,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
       return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
 
     final url = Uri.parse('https://e-mail-auth.onrender.com');
     final headers = {'Content-Type': 'application/json'};
@@ -209,7 +214,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          ElevatedButton(
+                          _isLoading
+                          ? const CircularProgressIndicator()
+                           : ElevatedButton(
                             onPressed: () {
                               createAccount();
                             },
