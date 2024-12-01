@@ -35,8 +35,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    final url = Uri.parse('https://e-mail-auth.onrender.com');
-    final headers = {'Content-Type': 'application/json'};
+    final url = Uri.parse('http://e-mail-auth.onrender.com');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      };
     final body = jsonEncode({
       'name' : name ,
       'email' : email,
@@ -84,6 +87,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           backgroundColor: Colors.red,
         ),
       );
+    } finally{
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
