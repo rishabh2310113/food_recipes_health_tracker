@@ -33,9 +33,9 @@ class _SignInScreenState extends State<SignInScreen> {
       _isLoading = true;
     });
 
-    try {
+   try {
       final response = await http.post(
-        Uri.parse('https://e-mail-auth.onrender.com/login'),
+        Uri.parse('https://e-mail-auth.onrender.com/user/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -43,7 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
-        if (responseData['success'] == true) {
+        if (responseData['status'] == "SUCCESS") {
           Navigator.pushNamedAndRemoveUntil(
               context, '/home', (route) => false);
         } else {

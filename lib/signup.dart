@@ -21,7 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-    if(name == "" ||email =="" || password =="" ){
+    if(name == "" ||email == "" || password == "" ){
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("please fill all the details!"),
@@ -35,17 +35,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    final url = Uri.parse('http://e-mail-auth.onrender.com');
-    final headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      };
+    final url = Uri.parse('https://e-mail-auth.onrender.com/user/signup');
+    final headers = {'Content-Type': 'application/json','Accept': 'application/json',};
     final body = jsonEncode({
       'name' : name ,
       'email' : email,
       'password' : password,
     });
-
+    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("creating your account..."),
