@@ -1,3 +1,5 @@
+import 'package:final_project/keyboard_screen.dart';
+import 'package:final_project/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -90,7 +92,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.person, size: 45, color: Colors.black),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -140,7 +147,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.keyboard, size: 35),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const KeyboardScreen()),
+                        );
+                      },
                     ),
                     ElevatedButton(
                       onPressed: () => _pickImage(ImageSource.camera),
