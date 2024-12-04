@@ -52,10 +52,10 @@ class KeyboardScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 200),
+              const SizedBox(height: 20),
               const Center(
                 child: Text(
-                  'Search for Food Items...',
+                  'LIKHH NA BHIDUUUU',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
                 ),
               ),
