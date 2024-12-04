@@ -17,8 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
    final picker = ImagePicker();
    List<String> _extractedChips = [];
 
-   Future<void> getImageAndExtractText() async{
-    final pickerImage = await picker.pickImage(source: ImageSource.camera);
+   Future<void> _pickImage(ImageSource source) async{
+    final pickerImage = await picker.pickImage(source: source);
        
      if (pickerImage == null) {
       _showSnackbar('No image selected');
@@ -104,8 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 color: Colors.black,
                child: _image == null?const Center(
-                  child: const Text(
-                    'Camera Preview',
+                  child: Text(
+                    'AA GYA PHOTO LENE...🫡🫡🫡',
                     style: TextStyle(color: Colors.white),
                   ), 
                 )
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {},
                     ),
                     ElevatedButton(
-                      onPressed: getImageAndExtractText,
+                      onPressed: () => _pickImage(ImageSource.camera),
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
                         backgroundColor: Colors.black,
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.image, size: 35),
-                      onPressed: () {},
+                      onPressed: () => _pickImage(ImageSource.gallery),
                     ),
                   ],
                 ),
@@ -165,4 +165,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
- 
+

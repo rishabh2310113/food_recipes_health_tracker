@@ -76,6 +76,7 @@ flutter:
     - assets/background.svg
     - assets/password.jpg
     - assets/password1.svg
+    - assets/port.jpeg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
