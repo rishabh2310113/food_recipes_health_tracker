@@ -1,11 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatelessWidget {
-  final String userName = "Rishab Ranjan"; 
-  final String userEmail = "rishabh@gmail.com";
+class ProfileScreen extends StatefulWidget {
 
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String userName = ""; 
+  String userEmail = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName') ?? "Hello User";
+      userEmail = prefs.getString('userEmail') ?? "guest@example.com";
+    });
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); 
+
+    Navigator.pushNamedAndRemoveUntil(context, 'signin', (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +113,7 @@ class ProfileScreen extends StatelessWidget {
                     _buildMenuOption(context, Icons.privacy_tip, "Privacy policy"),
                     _buildMenuOption(context, Icons.rule, "Terms & conditions"),
                     _buildMenuOption(context, Icons.help_outline, "FAQs"),
-                    _buildMenuOption(context, Icons.logout, "Log out"),
+                    _buildMenuOption(context, Icons.logout, "Log out", action: () => _logout(context),),
                   ],
                 ),
               ),
@@ -110,7 +138,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuOption(BuildContext context, IconData icon, String title) {
+  Widget _buildMenuOption(BuildContext context, IconData icon, String title , {VoidCallback? action}) {
     return ListTile(
       leading: Icon(icon, color: Colors.black),
       title: Text(
@@ -122,7 +150,7 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
-      onTap: () {},
+      onTap: action,
     );
   }
 }

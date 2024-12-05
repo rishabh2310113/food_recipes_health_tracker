@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -59,8 +60,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Account created successfully"),backgroundColor: Colors.green,)
             );
+            nameController.clear();
+            emailController.clear();
+            passwordController.clear();
 
-            Navigator.pushNamed(context, '/home');
+            final prefs = await SharedPreferences.getInstance();
+            prefs.setBool('isLoggedIn', true); 
+            prefs.setString('userEmail', email);
+
+           // Navigator.pushReplacementNamed(context, '/home');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

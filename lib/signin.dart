@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class SignInScreen extends StatefulWidget {
@@ -44,6 +45,9 @@ class _SignInScreenState extends State<SignInScreen> {
         final responseData = jsonDecode(response.body);
 
         if (responseData['status'] == "SUCCESS") {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('isLoggedIn', true);
+          await prefs.setString('userEmail', email);
           Navigator.pushNamedAndRemoveUntil(
               context, '/home', (route) => false);
         } else {
