@@ -318,7 +318,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'signin');
+                                  Navigator.pushReplacementNamed(context, 'signin');
                                 },
                                 child: const Text(
                                   "Sign in",

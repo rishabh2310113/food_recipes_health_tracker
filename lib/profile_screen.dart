@@ -11,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String userName = ""; 
+  String userName = "Hello User!!"; 
   String userEmail = "";
 
   @override
@@ -23,7 +23,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      userName = prefs.getString('userName') ?? "Hello User";
       userEmail = prefs.getString('userEmail') ?? "guest@example.com";
     });
   }
