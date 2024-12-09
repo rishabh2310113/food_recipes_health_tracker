@@ -79,6 +79,8 @@ flutter:
     - assets/password1.svg
     - assets/port.jpeg
     - assets/nutritrack_logo.svg
+    - assets/assistant_logo.jpg
+    - assets/image.jpg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

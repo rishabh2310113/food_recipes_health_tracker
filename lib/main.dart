@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:final_project/FAQs_screen.dart';
 import 'package:final_project/home.dart';
 import 'package:final_project/privacy_&_policy.dart';
 import 'package:final_project/terms_&_conditions.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/terms': (context) => TermsAndConditionsScreen(), 
         '/privacy': (context) => PrivacyPolicyScreen(), 
         '/home': (context) => HomeScreen(),
+        '/faqs' : (context) => FAQScreen(),
       },
     );
   }

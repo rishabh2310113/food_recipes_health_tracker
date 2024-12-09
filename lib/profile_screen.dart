@@ -1,3 +1,4 @@
+import 'package:final_project/profile_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +12,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String userName = "Hello User!!"; 
   String userEmail = "";
 
   @override
@@ -34,9 +34,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.pushNamedAndRemoveUntil(context, 'signin', (route) => false);
   }
 
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Confirm Logout"),
+        content: const Text("Are you sure you want to log out?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel", style: TextStyle(color: Colors.black)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFCC6164),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              _logout(context);
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFCC6164),
+        title: const Text(
+          "Profile",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -46,48 +86,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back, size: 30, color: Colors.black),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    const SizedBox(width: 8),
-                    const Text(
-                      "Profile",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 35,
-                      backgroundImage: AssetImage('assets/port.jpeg'),
-                    ),
+              const SizedBox(height: 40),
+                   CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.grey[500],
+                    child: const Icon(Icons.person, size: 60, color: Colors.white),
+                  ),
                     const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          userName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
                         Text(
                           userEmail,
                           style: const TextStyle(
@@ -96,23 +102,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: Colors.black54,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(height: 30),
               Expanded(
                 child: ListView(
                   children: [
                     _buildMenuOption(context, Icons.person, "Profile settings"),
-                    _buildMenuOption(context, Icons.health_and_safety, "Health information"),
-                    _buildMenuOption(context, Icons.history, "History"),
-                    _buildMenuOption(context, Icons.settings, "Settings"),
-                    _buildMenuOption(context, Icons.privacy_tip, "Privacy policy"),
-                    _buildMenuOption(context, Icons.rule, "Terms & conditions"),
-                    _buildMenuOption(context, Icons.help_outline, "FAQs"),
-                    _buildMenuOption(context, Icons.logout, "Log out", action: () => _logout(context),),
+                    // _buildMenuOption(context, Icons.health_and_safety, "Health information"),
+                    // _buildMenuOption(context, Icons.history, "History"),
+                    // _buildMenuOption(context, Icons.settings, "Settings"),
+                    _buildMenuOption(context, Icons.privacy_tip, "Privacy policy" , action: () => Navigator.pushNamed(context, '/privacy')),
+                    _buildMenuOption(context, Icons.rule, "Terms & conditions" , action: () => Navigator.pushNamed(context, '/terms')),
+                    _buildMenuOption(context, Icons.help_outline, "FAQs" , action: () => Navigator.pushNamed(context, '/faqs')),
+                    _buildMenuOption(context, Icons.logout, "Log out", action: () => _showLogoutConfirmationDialog(context)),
                   ],
                 ),
               ),
@@ -123,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     "NutriTrack\nversion 2.0",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.normal,
                       color: Colors.grey.shade600,
                     ),
@@ -149,7 +150,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black),
-      onTap: action,
+      onTap: action ??
+        () {
+          if (title == "Profile settings") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileSettingsScreen()),
+            );
+          }
+        },
     );
   }
 }

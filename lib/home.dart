@@ -94,6 +94,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFCC6164),
+        title: const Text(
+          "NutriTrack",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person, color: Colors.black, size: 45,),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -104,46 +126,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Column(
             children: [
-              Container(
-                color: Colors.transparent,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 50.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "NutriTrack",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.person, size: 45, color: Colors.black),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 80),
           Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20), 
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.56, 
                 width: MediaQuery.of(context).size.width * 0.9,
-                color: Colors.black,
-               child: _image == null?const Center(
-                  child: Text(
-                    'Your Snapshot Awaits...🫡🫡🫡',
-                    style: TextStyle(color: Colors.white),
-                  ), 
-                )
+                color: Colors.transparent,
+               child: _image == null? Image.asset(
+              'assets/image.jpg',
+              fit: BoxFit.cover,
+            )
                 : Image.file(_image!),
               ),
             ),
