@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -8,6 +10,35 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
+  bool isLoading = false;
+
+  Future<void> sendForgotPasswordRequest(String email) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final url = Uri.parse('http://e-mail-auth.onrender.com/user/forgotPassword');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(responseBody['message'] ?? "Email sent successfully")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to send email. Please try again.")),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -80,9 +111,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           const SnackBar(content: Text("Please enter your email address"), backgroundColor: Color(0xFFE55353)),
                         );
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("OTP sent to $email")),
-                        );
+                        sendForgotPasswordRequest(email);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -92,7 +121,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: const Text(
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        :const Text(
                       'Get OTP',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),

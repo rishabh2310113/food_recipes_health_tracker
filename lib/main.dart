@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:final_project/home.dart';
 import 'package:final_project/privacy_&_policy.dart';
 import 'package:final_project/terms_&_conditions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'onboarding.dart';
 import 'signup.dart';
 import 'signin.dart';
@@ -40,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkLoginState();
+    Timer(const Duration(seconds: 3), _checkLoginState);
   }
 
   Future<void> _checkLoginState() async {
@@ -56,9 +58,28 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(), 
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/nutritrack_logo.svg',
+              width: 120,
+              height: 120,
+            ),
+             const SizedBox(height: 20),
+             const Text(
+              'WELCOME TO NUTRI-TRACK',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                ),
+            ),
+            const SizedBox(height: 20),
+          ],
+      ),
       ),
     );
   }

@@ -5,6 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'result.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,8 +62,25 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _onChipPressed(String chipText) {
-    _showSnackbar("You clicked on: $chipText");
+  void _onChipPressed(String chipText) async{
+    final url = Uri.parse('https://nutritrack-fk3j.onrender.com/api/nutrition');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({"Food_Name": chipText}),
+    );
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body)['data'];
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultScreen(data: data),
+      ),
+    );
+  } else {
+    _showSnackbar("Failed to fetch details. Please try again!");
+  }
   }
 
   @override
@@ -102,17 +122,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 10),
           Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20), 
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.5, 
+                height: MediaQuery.of(context).size.height * 0.56, 
                 width: MediaQuery.of(context).size.width * 0.9,
                 color: Colors.black,
                child: _image == null?const Center(
                   child: Text(
-                    'AA GYA PHOTO LENE...🫡🫡🫡',
+                    'Your Snapshot Awaits...🫡🫡🫡',
                     style: TextStyle(color: Colors.white),
                   ), 
                 )
