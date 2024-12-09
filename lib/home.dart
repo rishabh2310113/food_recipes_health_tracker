@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
    File? _image;
    final picker = ImagePicker();
    List<String> _extractedChips = [];
+   bool _isLoading = false;
 
    Future<void> _pickImage(ImageSource source) async{
     final pickerImage = await picker.pickImage(source: source);
@@ -63,12 +64,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onChipPressed(String chipText) async{
+    setState(() {
+      _isLoading = true;
+    });
     final url = Uri.parse('https://nutritrack-fk3j.onrender.com/api/nutrition');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
       body: json.encode({"Food_Name": chipText}),
     );
+
+    setState(() {
+      _isLoading = false; 
+    });
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body)['data'];
@@ -142,7 +150,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 16),
               Expanded(
-                child: SingleChildScrollView(
+                child: Stack(
+                children: [
+                SingleChildScrollView(
                   child: Wrap(
                     spacing: 8.0,
                     runSpacing: 8.0,
@@ -155,6 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                         .toList(),
                   ),
+                ),
+                if (_isLoading)
+                      const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Container(
